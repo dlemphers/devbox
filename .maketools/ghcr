@@ -1,0 +1,5 @@
+define login 
+    echo $$GH_PACKAGES_REGISTRY_PAT | docker login ghcr.io -u dlemphers --password-stdin
+endef
+
+
