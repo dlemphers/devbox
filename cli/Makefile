@@ -1,18 +1,44 @@
-develop-cli-locally:
-	-docker rm -f devbox-http-echo
+start-echo-server:
+	-docker rm -f dbx-http-echo
 	-docker run -d \
-		--name devbox-http-echo \
+		--name dbx-http-echo \
 		hashicorp/http-echo \
 		-text="9x3s8ff"
 
+stop-echo-server:
+	-docker rm -f dbx-http-echo
+
+test-cli-locally: start-echo-server
+
 	docker run --rm \
 		-ti \
-		-v `pwd`/src/devbox:/usr/local/lib/python3.10/site-packages/devbox \
+		-v `pwd`/src/dbx:/usr/local/lib/python3.10/site-packages/dbx \
 		-v /etc/hosts:/etc/hosts \
 		-v /var/run/docker.sock:/var/run/docker.sock \
-		ghcr.io/dlemphers/devbox:cli-dev \
-		devbox network docker --update-hosts-file
+		ghcr.io/dlemphers/dbx:cli-dev \
+		dbx network docker --update-hosts-file
 	
-	curl http://devbox-http-echo:5678
+	curl http://dbx-http-echo:5678
 
-	-docker rm -f devbox-http-echo
+	$(MAKE) stop-echo-server
+
+develop-cli-locally: start-echo-server
+
+	docker run --rm \
+		-ti \
+		-v `pwd`/src/dbx:/usr/local/lib/python3.10/site-packages/dbx \
+		-v /etc/hosts:/etc/hosts \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		ghcr.io/dlemphers/dbx:cli-dev \
+		bash
+	
+	$(MAKE) stop-echo-server
+
+compile-cli-binary:
+	docker run --rm \
+		-t \
+		-v `pwd`/src:/src \
+		-v `pwd`/.dist:/.dist \
+		-w /.dist \
+		ghcr.io/dlemphers/dbx:cli-pyinstaller \
+		sh build_exe.sh
