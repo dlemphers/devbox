@@ -1,8 +1,8 @@
 # Table of contents
 
 * [Hello Gitbook](README.md)
-* [Architecture](architecture.md)
 
 ## Databases
 
-* [Mongdb](databases/mongdb.md)
+* [Tech](databases/tech/README.md)
+  * [Architecture](databases/tech/architecture.md)
