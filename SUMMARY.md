@@ -1,6 +1,7 @@
 # Table of contents
 
-* [👋 Welcome!](README.md)
+* [Hello Gitbook](README.md)
+* [👋 Welcome!](welcome.md)
 
 ## About us
 
